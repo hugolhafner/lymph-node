@@ -1,0 +1,25 @@
+{
+  "name": "lymph-node",
+  "version": "0.0.0-1",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "startup": "~0.1.12",
+    "express": "~3.3.5"
+  },
+  "devDependencies": {
+    "mocha": "~1.12.0",
+    "expect.js": "~0.2.0",
+    "blanket": "~1.1.5"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.1.x"
+  },
+  "scripts": {
+    "blanket": {
+      "pattern": "lymph-node/lib"
+    },
+    "test": "foreman run sh ./bin/tests"
+  }
+}
