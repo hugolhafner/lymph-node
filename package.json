@@ -4,6 +4,7 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
+    "heroku.js": "git+https://github.com/dncrews/heroku.js.git",
     "startup": "~0.1.12",
     "express": "~3.3.5"
   },
