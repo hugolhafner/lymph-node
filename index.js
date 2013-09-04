@@ -1,5 +1,5 @@
 var express = require('express')
-  , heroku = require('heroku.js')
+  , Heroku = require('heroku.js')
   , app = module.exports = express();
 
 app.post('/restart/:appName', function(req, res, next) {
@@ -8,7 +8,15 @@ app.post('/restart/:appName', function(req, res, next) {
 
   if (privateKey !== process.env.PRIVATE_KEY) return res.send(401);
 
-  new heroku.App(appName).process().restart(function(success) {
-    res.send(success ? 200 : 400);
+  var api = new Heroku({
+    'email' : process.env.HEROKU_EMAIL,
+    'apiToken' : process.env.HEROKU_API_TOKEN
+  });
+
+  return api.postPsRestart(appName, {}, function(err, response) {
+    if(err) return next(err);
+
+    console.log(response);
+    res.send(response.status);
   });
 });
