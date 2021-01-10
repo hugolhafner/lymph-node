@@ -1,22 +1,18 @@
-var express = require('express')
-  , Heroku = require('heroku.js')
-  , app = module.exports = express();
+const express = require("express")
+const Heroku = require("heroku-client")
 
-app.post('/restart/:appName', function(req, res, next) {
-  var appName = req.params.appName
-    , privateKey = req.headers['x-user-key'];
+const app = express()
 
-  if (privateKey !== process.env.PRIVATE_KEY) return res.send(401);
+app.post("/restart/:appName", async (req, res, next) => {
+  var appName = req.params.appName,
+    privateKey = req.headers["x-user-key"]
 
-  var api = new Heroku({
-    'email' : process.env.HEROKU_EMAIL,
-    'apiToken' : process.env.HEROKU_API_TOKEN
-  });
+  if (privateKey !== process.env.PRIVATE_KEY) return res.sendStatus(401)
 
-  return api.postPsRestart(appName, {}, function(err, response) {
-    if(err) return next(err);
+  var api = new Heroku({ token: process.env.HEROKU_API_TOKEN })
 
-    console.log(response);
-    res.send(response.status);
-  });
-});
+  const restart = await api.delete(`/apps/${appName}/dynos`)
+  res.send(restart)
+})
+
+app.listen(process.env.PORT)
